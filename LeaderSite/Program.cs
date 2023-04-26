@@ -7,6 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Threading;
 using System.IO;
+using System.Data.SQLite;
 
 namespace LeaderSite
 {
@@ -20,6 +21,20 @@ namespace LeaderSite
             driver.Navigate().GoToUrl("https://www.leader.ir/");
             Console.WriteLine("opened browser");
 
+            string path = "dataTable_leader.db";
+
+            if (!File.Exists(path))
+            {
+                SQLiteConnection.CreateFile(path);
+                using (var sqlite = new SQLiteConnection(@"Data Source=" + path))
+                {
+                    sqlite.Open();
+                    string sql = "create table leader(statements TEXT)";
+                    SQLiteCommand command = new SQLiteCommand(sql, sqlite);
+                    command.ExecuteNonQuery();
+                }
+
+            }
 
             var dataList = driver.FindElements(By.XPath("/html/body/footer/nav[1]/div/div[2]/div/div[1]/div[1]/ul/li"));
             int countDataListTopics = dataList.Count();
