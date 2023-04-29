@@ -21,10 +21,11 @@ namespace LeaderSite
             driver.Navigate().GoToUrl("https://www.leader.ir/");
             Console.WriteLine("opened browser");
 
-            string path = "dataTable_leader.db";
+            string path = "table_leader.db";
 
             if (!File.Exists(path))
             {
+                Thread.Sleep(1000);
                 SQLiteConnection.CreateFile(path);
                 using (var sqlite = new SQLiteConnection(@"Data Source=" + path))
                 {
@@ -99,7 +100,7 @@ namespace LeaderSite
 
                         try
                         {
-                            SQLiteConnection con = new SQLiteConnection("Data Source = dataTable_leader.db");
+                            SQLiteConnection con = new SQLiteConnection("Data Source = table_leader.db");
                             con.Open();
                             SQLiteCommand cmd = new SQLiteCommand();
                             cmd.CommandText = "insert into leader(statements) VALUES(@statements)";
