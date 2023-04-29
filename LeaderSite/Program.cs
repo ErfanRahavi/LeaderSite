@@ -95,10 +95,22 @@ namespace LeaderSite
 
                         string statementsDetails = $"{newsTopic}\n\n + {newsText}";
                         Thread.Sleep(1000);
-                        //File.WriteAllText($@"C:\Users\erfan\source\repos\LeaderProject\LeaderProject\{newsTime}.txt", statementsDetails);
-                        Thread.Sleep(1000);
+                      
 
-
+                        try
+                        {
+                            SQLiteConnection con = new SQLiteConnection("Data Source = dataTable_leader.db");
+                            con.Open();
+                            SQLiteCommand cmd = new SQLiteCommand();
+                            cmd.CommandText = "insert into leader(statements) VALUES(@statements)";
+                            cmd.Connection = con;
+                            cmd.Parameters.AddWithValue("@statements", statementsDetails);
+                            cmd.ExecuteNonQuery();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
 
                         try
                         {
