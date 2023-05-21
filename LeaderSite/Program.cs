@@ -25,32 +25,24 @@ namespace LeaderSite
                 db.CreateDb();
 
 
-                var archive = driver.FindElement(By.XPath("/html/body/footer/nav[3]/ul/li[5]/h6/a"));
-                archive.Click();
-                var dataList = driver.FindElements(By.XPath("/html/body/main/div[1]/section[1]/main/div[1]/ul/li"));
-                int countDataListTopics = dataList.Count();
-                List<string> listOfTopics = new List<string>();
 
-                for (int i = 1; i <= countDataListTopics; i++)
-                {
-                    var topics = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[1]/ul/li[{i}]")).Text;
-                    Console.WriteLine(topics);
-                    listOfTopics.Add(topics);
+                var SL = new SelectTopics();
+                SL.topicSelected();
 
 
-                    if (topics == "بیانات")
-                    {
-                        var selectTopics = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[1]/ul/li[{i}]"));
-                        Thread.Sleep(1000);
-                        selectTopics.Click();
-                    }
-                }
 
                 var years = driver.FindElements(By.XPath("/html/body/main/div[1]/section[1]/main/div[2]/ul/li"));
                 var month = driver.FindElements(By.XPath("/html/body/main/div[1]/section[1]/main/div[3]/ul/li"));
 
-                for (int i = 2; i <= 2; i++)
+                for (int i = 1; i <= years.Count; i++)
                 {
+
+                    if (i == 1 * 5)
+                    {
+                        var NextYYY = driver.FindElement(By.XPath("/html/body/main/div[1]/section[1]/main/div[2]/i[2]"));
+                        NextYYY.Click();
+                    }
+
                     var selectedYear = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[2]/ul/li[{i}]"));
                     Thread.Sleep(1000);
                     selectedYear.Click();
@@ -86,12 +78,11 @@ namespace LeaderSite
                             db.SaveDb();
 
                             driver.Navigate().Back();
-
-
-                            var selectTopics = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[1]/ul/li[{i}]"));
-                            Thread.Sleep(1000);
-                            selectTopics.Click();
                             Thread.Sleep(500);
+
+
+                            SL.topicSelected();
+
 
                             var selectedDefultYears = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[2]/ul/li[{i}]"));
                             Thread.Sleep(500);
@@ -102,6 +93,7 @@ namespace LeaderSite
 
                             selectedDefultMonth.Click();
                             Thread.Sleep(500);
+
                         }
                     }
                 }
