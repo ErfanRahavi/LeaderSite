@@ -20,25 +20,27 @@ namespace LeaderSite
                 driver.Navigate().GoToUrl("https://www.leader.ir/");
                 Console.WriteLine("opened browser");
 
-               
+
                 var db = new Database();
                 db.CreateDb();
-                
 
-                var dataList = driver.FindElements(By.XPath("/html/body/footer/nav[1]/div/div[2]/div/div[1]/div[1]/ul/li"));
+
+                var archive = driver.FindElement(By.XPath("/html/body/footer/nav[3]/ul/li[5]/h6/a"));
+                archive.Click();
+                var dataList = driver.FindElements(By.XPath("/html/body/main/div[1]/section[1]/main/div[1]/ul/li"));
                 int countDataListTopics = dataList.Count();
                 List<string> listOfTopics = new List<string>();
 
                 for (int i = 1; i <= countDataListTopics; i++)
                 {
-                    var topics = driver.FindElement(By.XPath($"/html/body/footer/nav[1]/div/div[2]/div/div[1]/div[1]/ul/li[{i}]")).Text;
+                    var topics = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[1]/ul/li[{i}]")).Text;
                     Console.WriteLine(topics);
                     listOfTopics.Add(topics);
 
 
                     if (topics == "بیانات")
                     {
-                        var selectTopics = driver.FindElement(By.XPath($"/html/body/footer/nav[1]/div/div[2]/div/div[1]/div[1]/ul/li[{i}]"));
+                        var selectTopics = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[1]/ul/li[{i}]"));
                         Thread.Sleep(1000);
                         selectTopics.Click();
                     }
@@ -84,8 +86,13 @@ namespace LeaderSite
                             db.SaveDb();
 
                             driver.Navigate().Back();
-                            
-                           
+
+
+                            var selectTopics = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[1]/ul/li[{i}]"));
+                            Thread.Sleep(1000);
+                            selectTopics.Click();
+                            Thread.Sleep(500);
+
                             var selectedDefultYears = driver.FindElement(By.XPath($"/html/body/main/div[1]/section[1]/main/div[2]/ul/li[{i}]"));
                             Thread.Sleep(500);
 

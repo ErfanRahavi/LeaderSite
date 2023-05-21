@@ -12,7 +12,7 @@ namespace LeaderSite
 {
     internal class Database : Driver
     {
-        string path = "table_leader.db";
+        string path = "data_leader.db";
         public void CreateDb()
         {
             if (!File.Exists(path))
@@ -38,7 +38,7 @@ namespace LeaderSite
                 var newsText = driver.FindElement(By.XPath("/html/body/main/div[1]/section/main/article[2]/div[2]")).Text;
                 string statementsDetails = $"{newsTopic}\n\n + {newsText}";
 
-                SQLiteConnection con = new SQLiteConnection("Data Source = table_leader.db");
+                SQLiteConnection con = new SQLiteConnection($"Data Source = {path}");
                 con.Open();
                 SQLiteCommand cmd = new SQLiteCommand();
                 cmd.CommandText = "insert into leader(statements) VALUES(@statements)";
